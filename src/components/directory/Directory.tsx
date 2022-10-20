@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import './scss/Directory.scss';
 import mainService from "../../services/main.service";
+import ModalHandleContact from "../modalHandleContact/ModalHandleContact";
 
 function Directory() {
+
+    const [showModalHandleContact, setShowModalHandleContact] = useState(false);
 
     useEffect(() => {
         fetchData().then((res) => {
@@ -38,7 +41,7 @@ function Directory() {
 
     const renderContactList = CONTACTS.map((contact, index) => {
         return (
-            <div className="contact-wrapper column" key={index}>
+            <div className="contact-wrapper column" key={index} onClick={() => { setShowModalHandleContact(true) }}>
                 <div className="contact-information column">
                     <span>{contact.firstname} {contact.lastname}</span>
                     <span>{contact.email}</span>
@@ -60,8 +63,11 @@ function Directory() {
                 <div id="contact-list" className="column">
                     {renderContactList}
                 </div>
-
             </div>
+            <ModalHandleContact
+                isOpen={showModalHandleContact}
+                handleClose={() => setShowModalHandleContact(false)}
+            />
         </div>
     )
 

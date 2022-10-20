@@ -1,0 +1,11 @@
+#modal-header {
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    #icon-close-modal {
+        margin: 5vh 4vw 0px 0px;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
