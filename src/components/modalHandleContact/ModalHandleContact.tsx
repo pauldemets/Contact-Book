@@ -7,37 +7,59 @@ function ModalHandleContact({ isOpen, handleClose }) {
 
     const customStyles = {
         content: {
-            top: '0%',
+            top: '0px',
             bottom: '0px',
-            left: '70%',
-            right: 'auto',
+            left: 'auto',
+            position: 'absolute',
+            right: '0px',
             padding: "0px",
             margin: "0px",
-            width: '30%',
-            // border: "solid 1px blue",
-            // marginRight: '-50%',
+            width: '35vw',
+            minWidth: '20rem',
+            display: 'flex',
+            flexDirection: 'column'
         },
     };
 
-    const handleCloseModal = () => {
-
-    }
-
     return (
-        <div id="modal" className="column">
-            <Modal
-                isOpen={isOpen}
-                style={customStyles}
-            >
-                <div id="modal-header" className="row">
-                    <GrClose
-                        id="icon-close-modal"
-                        size={30}
-                        onClick={handleClose}
-                    />
-                </div>
-            </Modal>
-        </div>
+
+        <Modal
+            isOpen={isOpen}
+            style={customStyles}
+        >
+            <div id="modal-header" className="row">
+                <GrClose
+                    id="icon-close-modal"
+                    size={30}
+                    onClick={handleClose}
+                />
+            </div>
+            <div id="modal-form" className="column">
+                <form>
+                    <div className="row space-between input-wrapper">
+                        <input type="text" placeholder="First name" className="modal-input" required />
+                        <input type="text" placeholder='Last name' className="modal-input" required />
+                    </div>
+                    <div className="input-wrapper row">
+                        <input type="email" placeholder="Email" className="modal-input" required />
+                    </div>
+                    <div className="input-wrapper row">
+                        <input type="date" placeholder="Birthday" className="modal-input" required />
+                    </div>
+                    <div className="row" id="button-wrapper">
+                        <button type="submit" className="modal-button modal-button-confirm">
+                            Save
+                        </button>
+                        <button type="reset" className="modal-button modal-button-delete">
+                            Delete
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </Modal>
+
+
     )
 
 }
