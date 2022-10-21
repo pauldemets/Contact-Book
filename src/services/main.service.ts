@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Contact, ContactEntity } from "../type/contact.type";
 
 class mainService {
 
@@ -6,21 +7,22 @@ class mainService {
         axios.defaults.withCredentials = false;
     }
 
-    public fetchMainData = async () => {
+    public getContacts = async (): Promise<Contact[]> => {
         return new Promise((resolve, reject) => {
-            axios.get('http://127.0.0.1:3000/test', {
+            axios.get('http://127.0.0.1:3001/contacts', {
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
             })
-                .then(function (response) {
-                    // console.log("salut", response);
-                    resolve(response);
-                })
-                .catch(function (error) {
-                    reject(error);
-                })
+                .then((response) => resolve(
+                    response.data.map((contact: ContactEntity): Contact => {
+                        return { ...contact, birthday: new Date(contact.birthday) };
+                    })
+                ))
+                .catch((error) =>
+                    reject(error)
+                )
         })
     };
 

@@ -1,0 +1,18 @@
+{
+    "contacts": [
+        {
+            "id": 1,
+            "firstname": "Julien",
+            "lastname": "Doré",
+            "email": "ju@gmail.com",
+            "birthday": "2012-04-30T02:15:12.356Z"
+        },
+        {
+            "id": 2,
+            "firstname": "Karine",
+            "lastname": "Lemarch",
+            "email": "karine@gmail.com",
+            "birthday": "2012-04-30T02:15:12.356Z"
+        }
+    ]
+}

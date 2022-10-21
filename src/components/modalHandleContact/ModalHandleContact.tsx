@@ -3,7 +3,9 @@ import './scss/ModalHandleContact.scss';
 import Modal from 'react-modal';
 import { GrClose } from "react-icons/gr";
 
-function ModalHandleContact({ isOpen, handleClose }) {
+type ModalHandleContactProps = { isOpen: boolean, handleClose: () => void };
+
+function ModalHandleContact({ isOpen, handleClose }: ModalHandleContactProps) {
 
     const customStyles = {
         content: {
