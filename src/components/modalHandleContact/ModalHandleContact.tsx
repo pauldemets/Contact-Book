@@ -61,6 +61,16 @@ function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandle
         }
     }
 
+    const handleDeleteContact = async () => {
+        try {
+            const res = await mainService.deleteContact(modalContact.id);
+            handleClose();
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
     const getIdNewContact = async (): Promise<number> => {
         const contacts: Array<Contact> = await mainService.getContacts();
         return contacts.length ? Math.max(...contacts.map(c => c.id)) + 1 : 1;
@@ -123,7 +133,7 @@ function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandle
                         <button type="submit" className="modal-button modal-button-confirm">
                             Save
                         </button>
-                        <button type="reset" className="modal-button modal-button-delete">
+                        <button type="reset" className="modal-button modal-button-delete" onClick={handleDeleteContact}>
                             Delete
                         </button>
                     </div>

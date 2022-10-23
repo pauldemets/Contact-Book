@@ -60,6 +60,23 @@ class mainService {
         })
     };
 
+    public deleteContact = async (id: number): Promise<Contact> => {
+        return new Promise((resolve, reject) => {
+            axios.delete(`http://127.0.0.1:3001/contacts/${id}`, {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+            })
+                .then((response) => resolve(
+                    response.data
+                ))
+                .catch((error) =>
+                    reject(error)
+                )
+        })
+    };
+
 }
 
 export default new mainService();
