@@ -26,6 +26,23 @@ class mainService {
         })
     };
 
+    public newContact = async (form: Contact): Promise<Contact> => {
+        return new Promise((resolve, reject) => {
+            axios.post('http://127.0.0.1:3001/contacts', form, {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+            })
+                .then((response) => resolve(
+                    response.data
+                ))
+                .catch((error) =>
+                    reject(error)
+                )
+        })
+    };
+
 }
 
 export default new mainService();

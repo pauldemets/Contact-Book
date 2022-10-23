@@ -1,4 +1,5 @@
 export type Contact = {
+    id: number,
     firstname: string;
     lastname: string;
     email: string;
@@ -6,6 +7,7 @@ export type Contact = {
 };
 
 export type ContactEntity = {
+    id: number,
     firstname: string;
     lastname: string;
     email: string;
