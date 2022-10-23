@@ -43,6 +43,23 @@ class mainService {
         })
     };
 
+    public editContact = async (form: Contact, id: number): Promise<Contact> => {
+        return new Promise((resolve, reject) => {
+            axios.put(`http://127.0.0.1:3001/contacts/${id}`, form, {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+            })
+                .then((response) => resolve(
+                    response.data
+                ))
+                .catch((error) =>
+                    reject(error)
+                )
+        })
+    };
+
 }
 
 export default new mainService();

@@ -4,14 +4,14 @@ import Modal from 'react-modal';
 import { GrClose } from "react-icons/gr";
 import { Contact } from "../../type/contact.type";
 import mainService from "../../services/main.service";
+import { defaultContact } from "../../services/constants/defaultContact.constants";
 
 type ModalHandleContactProps = { isOpen: boolean, handleClose: () => void, currentContact: Contact };
 
 function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandleContactProps) {
 
-    const [modalContact, setModalContact] = useState<Contact>(currentContact);
-    const [handleCreateContact, setHandleCreateContact] = useState<number>(0);
-
+    const [modalContact, setModalContact] = useState<Contact>(defaultContact);
+    const [isCreateMode, setIsCreateMode] = useState<boolean>(false);
 
     const customStyles = {
         content: {
@@ -30,7 +30,13 @@ function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandle
     };
 
     useEffect(() => {
-        if (modalContact.id !== -1) {
+        setModalContact({ ...currentContact });
+        setIsCreateMode(currentContact.id === -1);
+    }, [currentContact]);
+
+
+    useEffect(() => {
+        if (modalContact.id !== -1 && isCreateMode) {
             mainService.newContact(modalContact)
                 .then((res) => {
                     handleClose();
@@ -39,7 +45,7 @@ function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandle
                     (e: unknown) => console.log(e)
                 );
         }
-    }, [modalContact.id])
+    }, [modalContact.id]);
 
 
     const handleSaveContact = async (e) => {
@@ -50,7 +56,8 @@ function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandle
             setModalContact({ ...modalContact, id: newId });
         }
         else {
-            //édition contact
+            const res = await mainService.editContact(modalContact, modalContact.id);
+            handleClose();
         }
     }
 
@@ -80,6 +87,7 @@ function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandle
                             placeholder="First name"
                             className="modal-input"
                             required
+                            value={modalContact.firstname}
                             onChange={(e) => setModalContact({ ...modalContact, firstname: e.target.value })}
                         />
                         <input
@@ -87,6 +95,7 @@ function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandle
                             placeholder='Last name'
                             className="modal-input"
                             required
+                            value={modalContact.lastname}
                             onChange={(e) => setModalContact({ ...modalContact, lastname: e.target.value })}
                         />
                     </div>
@@ -96,6 +105,7 @@ function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandle
                             placeholder="Email"
                             className="modal-input"
                             required
+                            value={modalContact.email}
                             onChange={(e) => setModalContact({ ...modalContact, email: e.target.value })}
                         />
                     </div>
@@ -105,6 +115,7 @@ function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandle
                             placeholder="Birthday"
                             className="modal-input"
                             required
+                            value={modalContact.birthday ? modalContact.birthday.toLocaleDateString('fr-CA') : ""}
                             onChange={(e) => setModalContact({ ...modalContact, birthday: new Date(e.target.value) })}
                         />
                     </div>
