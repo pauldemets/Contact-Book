@@ -10,13 +10,20 @@ function Directory() {
 
     const [showModalHandleContact, setShowModalHandleContact] = useState(false);
     const [contacts, setContacts] = useState<Contact[]>([]);
+    const [contactsList, setContactsList] = useState<Contact[]>([]);
     const [refreshData, setRefreshData] = useState<number>(0);
     const [currentSelectedContact, setCurrentSelectedContact] = useState<Contact>({ ...defaultContact });
+    const [searchContact, setSearchContact] = useState<string>("");
 
     useEffect(() => {
-        mainService.getContacts().then(setContacts).catch(
-            (e: unknown) => console.log(e)
-        );
+        mainService.getContacts()
+            .then((contacts) => {
+                setContacts(contacts);
+                setContactsList(contacts);
+            })
+            .catch(
+                (e: unknown) => console.log(e)
+            );
     }, [refreshData]);
 
     const formatDate = (date: Date): string => {
@@ -27,14 +34,15 @@ function Directory() {
         })
     }
 
-    // const fetchData = async (): Promise<Contact[]> => {
-    //     try {
-    //         return await mainService.getContacts();
-    //     }
-    //     catch (e) {
-    //         console.log(e);
-    //     }
-    // }
+    useEffect(() => {
+        searchContact.length > 0 ?
+            setContactsList(
+                contactsList.filter(contact =>
+                    `${contact.firstname} ${contact.lastname}`.toLowerCase().includes(searchContact.toLowerCase()))
+            )
+            :
+            setContactsList(contacts);
+    }, [searchContact])
 
     const handleClickContact = (contact) => {
         setCurrentSelectedContact(contact);
@@ -52,7 +60,7 @@ function Directory() {
     }
 
 
-    const renderContactList = contacts.map((contact, index) => {
+    const renderContactList = contactsList.map((contact, index) => {
         return (
             <div className="contact-wrapper column" key={index} onClick={() => { handleClickContact(contact) }}>
                 <div className="contact-information column">
@@ -68,7 +76,7 @@ function Directory() {
         <div id="directory">
             <div id="directory-content" className="column">
                 <div id="directory-header" className="row">
-                    <input type="text" placeholder="search" />
+                    <input type="text" placeholder="search" onChange={(e) => setSearchContact(e.target.value)} />
                     <div id="button-new-contact" onClick={handleNewContact}>
                         <span>New</span>
                     </div>
