@@ -89,6 +89,7 @@ function Directory() {
                 isOpen={showModalHandleContact}
                 handleClose={handleCloseModal}
                 currentContact={currentSelectedContact}
+                handleRefreshList={() => setRefreshData(refreshData + 1)}
             />
         </div>
     )

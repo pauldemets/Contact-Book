@@ -5,10 +5,12 @@ import { GrClose } from "react-icons/gr";
 import { Contact } from "../../type/contact.type";
 import mainService from "../../services/main.service";
 import { defaultContact } from "../../services/constants/defaultContact.constants";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-type ModalHandleContactProps = { isOpen: boolean, handleClose: () => void, currentContact: Contact };
+type ModalHandleContactProps = { isOpen: boolean, handleClose: () => void, currentContact: Contact, handleRefreshList: () => void };
 
-function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandleContactProps) {
+function ModalHandleContact({ isOpen, handleClose, currentContact, handleRefreshList }: ModalHandleContactProps) {
 
     const [modalContact, setModalContact] = useState<Contact>(defaultContact);
     const [isCreateMode, setIsCreateMode] = useState<boolean>(false);
@@ -51,13 +53,13 @@ function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandle
     const handleSaveContact = async (e) => {
         e.preventDefault();
         if (currentContact.id === -1) {
-            //création d'un contact
             const newId = await getIdNewContact();
             setModalContact({ ...modalContact, id: newId });
         }
         else {
-            const res = await mainService.editContact(modalContact, modalContact.id);
-            handleClose();
+            await mainService.editContact(modalContact, modalContact.id);
+            handleRefreshList();
+            toast.success("Contact successfully edited !");
         }
     }
 
@@ -138,6 +140,9 @@ function ModalHandleContact({ isOpen, handleClose, currentContact }: ModalHandle
                         </button>
                     </div>
                 </form>
+                <ToastContainer
+                    position="top-center"
+                />
             </div>
         </Modal>
 
